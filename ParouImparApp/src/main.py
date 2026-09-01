@@ -2,19 +2,37 @@ import flet as ft
 
 def main(page: ft.Page):
     # ----- Event Listeners
+    def close_dialog(e):
+        page.pop_dialog()
+        page.update()
+
     def on_click_send(e):
         value = input_txt.value
         try:
             int_value = int(value)
+            output_txt = ft.Text(value='')
             if (int_value % 2) == 0:
-                output_txt.value += (f'{int_value} é par\n')
+                output_txt.value += (f'{int_value} é par')
             else:
-                output_txt.value += (f'{int_value} é ímpar\n')
+                output_txt.value += (f'{int_value} é ímpar')
+            output_col.controls.append(output_txt)
         except ValueError:
-            output_txt.value += (f'"{value}" não é um número inteiro\n')
+            if (value.strip() == ''):
+                dialog.content = ft.Text('O campo está vazio!')
+            else:
+                dialog.content = ft.Text(f'"{value}" não é um número inteiro')
+            page.show_dialog(dialog)
         input_txt.value = ''
+        page.update()
 
     # ----- Widgets
+    dialog = ft.AlertDialog(
+        title = ft.Text('Erro!'),
+        content =ft.Text(''),
+        actions = [
+            ft.TextButton('Fechar', on_click=close_dialog)
+        ]
+    )
     input_txt = ft.TextField(
         expand=True,
         hint_text='Digite um número inteiro...'
@@ -23,7 +41,6 @@ def main(page: ft.Page):
         icon=ft.Icons.SEND,
         on_click=on_click_send
         )
-    output_txt = ft.Text(value='')
 
     # ----- Layout
     input_row = ft.Row(
@@ -31,12 +48,13 @@ def main(page: ft.Page):
     )
     output_col = ft.Column(
         expand=True,
+        horizontal_alignment=ft.CrossAxisAlignment.STRETCH,
         scroll=ft.ScrollMode.AUTO,
-        controls=[output_txt]
+        spacing=0,
+        controls=[]
     )
     main_col = ft.Column(
         expand=True,
-        horizontal_alignment=ft.CrossAxisAlignment.STRETCH,
         controls=[input_row, output_col]
     )
 
