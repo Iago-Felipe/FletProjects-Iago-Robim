@@ -1,6 +1,7 @@
 import flet as ft
 
 def main(page: ft.Page):
+    page.theme_mode = ft.ThemeMode.DARK
     def close_dialog(e):
         page.pop_dialog()
         page.update()
@@ -16,26 +17,46 @@ def main(page: ft.Page):
             page.update()
 
         def delete_task(e):
-            output_col.controls.remove(output_row)
+            output_col.controls.remove(task_container)
             page.update()
+
+        if input_prio.value == 'Alta':
+            cor_barra = ft.Colors.RED
+        elif input_prio.value == 'Média':
+            cor_barra = ft.Colors.YELLOW
+        elif input_prio.value == 'Baixa':
+            cor_barra = ft.Colors.GREEN
+        else:
+            dialog.content = ft.Text('Selecione uma prioridade!')
+            page.show_dialog(dialog)
+            input_txt.value = ''
+            return
+        page.update()
 
         if (input_txt.value == ''):
             dialog.content = ft.Text('O campo está vazio!')
             page.show_dialog(dialog)
+            input_prio.value = None
             return
         
         check_button = ft.Checkbox(value=False, label=valor, on_change=text_decoration)
         delete_button = ft.IconButton(icon=ft.Icons.DELETE, on_click=delete_task)
         output_row = ft.Row(
-                expand=True,
                 spacing=0,
                 controls=[check_button, delete_button],
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN
             )
-        # output_col.controls.append(check_button)
-        # output_col.controls.append(delete_button)
-        output_col.controls.append(output_row)
+
+        task_container = ft.Container(
+            content=output_row,
+            border=ft.Border.only(left=ft.BorderSide(width=5, color=cor_barra)),
+            padding=ft.Padding(left=10),
+            margin=ft.Margin(bottom=10),
+        )
+
+        output_col.controls.append(task_container)
         input_txt.value = ''
+        input_prio.value = None
         page.update()
 
     # ---- Widgets
@@ -50,14 +71,26 @@ def main(page: ft.Page):
         expand=True,
         hint_text='Digite uma tarefa...'
         )
+    input_prio = ft.Dropdown(
+        label='Prioridade',
+        options=[
+            ft.dropdown.Option('Alta'),
+            ft.dropdown.Option('Média'),
+            ft.dropdown.Option('Baixa')
+        ]
+    )
     input_btn = ft.IconButton(
         icon=ft.Icons.ADD,
         on_click=on_click_send
         )
 
     # ----- Layout
+    input_rowInterno = ft.Row(
+        expand=True,
+        controls=[input_txt, input_prio]
+    )
     input_row = ft.Row(
-        controls=[input_txt, input_btn]
+        controls=[input_rowInterno, input_btn],
     )
     output_col = ft.Column(
         expand=True,
