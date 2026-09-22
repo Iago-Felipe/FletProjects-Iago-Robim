@@ -1,10 +1,22 @@
 import flet as ft
 import os
+
+from database import Database
 from model import Livro
 
 def main(page: ft.Page):
+    # .flet/storage/data/bookapp.db
     db_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "bookapp.db")
+        os.environ['FLET_APP_STORAGE_DATA'],
+        'bookapp.db'
+    )
+
+    db = Database(db_path)
+
+    # durante uma inserção
+    book = Livro('Harry Potter', 'J.K.R', 'Livro de magia', 29.99)
+    db.insert(book)
+
     def close_dialog(e):
         page.pop_dialog()
         page.update()
