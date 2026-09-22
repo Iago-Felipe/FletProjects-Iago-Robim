@@ -1,4 +1,4 @@
-# Peopleapp app
+# Bookapp app
 
 ## Run the app
 
