@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS books (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    author TEXT NOT NULL,
-    desc TEXT NOT NULL,
-    price REAL NOT NULL
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    title   TEXT NOT NULL,
+    author  TEXT NOT NULL,
+    desc    TEXT NOT NULL,
+    price   REAL NOT NULL,
+    cover   TEXT
 );
