@@ -4,11 +4,7 @@ import os
 from database import Database
 from model import Livro
 
-IMG_PH_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "assets",
-    "book_placeholder.png"
-)
+IMG_ERR_DEF = 'book_placeholder.jpeg'
 
 class BookApp(ft.Container):
     def __init__(self):
@@ -59,16 +55,10 @@ class BookApp(ft.Container):
 
     def new_book_entry(self, book:Livro):
         book_cover_img = ft.Image(
-            src=book.cover,
+            src=book.cover if book.cover.strip() != '' else IMG_ERR_DEF,
             fit=ft.BoxFit.COVER,
             width=100,
             height=120,
-            error_content=ft.Image(
-                src=IMG_PH_PATH,
-                fit=ft.BoxFit.COVER,
-                width=100,
-                height=120
-            )
         )
         book_info_col = ft.Column(
             controls=[
