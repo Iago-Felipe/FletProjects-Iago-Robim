@@ -4,6 +4,11 @@ from view import BookApp
 def main(page: ft.Page):
     page.title = "BookApp"
     book_app = BookApp()
+    page_appbar = ft.AppBar(
+        title=ft.Text("BookApp"),
+        center_title=True,
+        bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST
+    )
     # SafeArea permite criar um padding em volta do conteúdo
     # para evitar que o conteúdo interseccione com detalhes
     # de tela de um determinado sistema operacional (ex. Android)
