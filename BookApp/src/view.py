@@ -14,8 +14,21 @@ class BookApp(ft.Container):
         self.title_txt = ft.TextField(label='Title', expand=True)
         self.author_txt = ft.TextField(label='Author', expand=True)
         self.desc_txt = ft.TextField(label='Description', expand=True)
-        self.price_txt = ft.TextField(label='Price', expand=True)
-        self.url_txt = ft.TextField(label='Book Cover Image (URL)', expand=True)
+        self.price_txt = ft.TextField(
+            label='Price',
+            expand=True,
+            keyboard_type=ft.KeyboardType.NUMBER,
+            input_filter=ft.InputFilter(
+                allow=True,
+                regex_string=r"^d*\.\d*",
+                replacement_string=''
+            )
+        )
+        self.url_txt = ft.TextField(
+            label='Book Cover Image (URL)',
+            expand=True,
+            keyboard_type=ft.KeyboardType.URL
+            )
         self.output_col = ft.Column(
             expand=True,
             horizontal_alignment=ft.CrossAxisAlignment.STRETCH,
